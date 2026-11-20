@@ -1,0 +1,460 @@
+<title>Hidden Fastener Box Label</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one approval board, a narrow column of evidence blocks. Label art first, then proof it fits the box, then specs. */
+:root {
+  --orange: #FF5623;        /* Deckotech Orange */
+  --bg: #FDFCF4;            /* Marshmallow */
+  --surface: #ECE8E3;       /* Vapor Gray */
+  --line: #D6D0C9;
+  --fg: #1F1C1A;            /* Iron Black */
+  --muted: #6E665E;
+  --stone: #B3ABA3;         /* Stone Gray */
+  --stage: #E4DFD8;
+  --ok: #2F7D4F;
+  --warn: #A55A00;
+  --warn-bg: #FFF1DC;
+  --sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --mono: "Roboto Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --orange: #FF6A3D; --bg: #171513; --surface: #221F1C; --line: #36312C; --fg: #F3EFE8;
+    --muted: #A59D94; --stone: #6E665E; --stage: #1E1B18; --ok: #6CC594; --warn: #F2B35B; --warn-bg: #2E2416;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --orange: #FF6A3D; --bg: #171513; --surface: #221F1C; --line: #36312C; --fg: #F3EFE8;
+  --muted: #A59D94; --stone: #6E665E; --stage: #1E1B18; --ok: #6CC594; --warn: #F2B35B; --warn-bg: #2E2416;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 40px 72px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 56px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; letter-spacing: -0.02em; }
+h1 { font-size: clamp(30px, 5vw, 48px); font-weight: 800; line-height: 1.05; }
+h2 { font-size: 22px; font-weight: 700; color: var(--orange); }
+p { margin: 0; max-width: 65ch; }
+.eyebrow { font: 500 12px/1.3 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+header { display: grid; gap: 20px; }
+.brandrow { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.brandrow svg { height: 30px; width: auto; color: var(--orange); }
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); font-size: 13px; font-weight: 600; }
+.chip::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--warn); }
+.lede { color: var(--muted); font-size: 17px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 28px; }
+.meta div { display: grid; gap: 2px; }
+.meta b { font-weight: 600; }
+
+section { display: grid; gap: 20px; }
+.sechead { display: grid; gap: 6px; }
+
+.opts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.opt { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 10px; align-content: start; padding: 12px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); min-width: 0; }
+.opt img { width: 100%; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,.16)); }
+.opt b { font-weight: 700; font-size: 15px; }
+.opt b small { font: 500 11px var(--mono); letter-spacing: .08em; color: var(--muted); margin-right: 6px; }
+.opt span { font-size: 13px; color: var(--muted); line-height: 1.45; }
+.opt[aria-pressed="true"] { border-color: var(--orange); box-shadow: inset 0 0 0 1px var(--orange); }
+.opt:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.opt:hover { border-color: var(--stone); }
+@media (max-width: 900px) { .opts { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.hero { background: var(--stage); border-radius: 6px; padding: clamp(20px, 5vw, 56px); display: grid; place-items: center; }
+.hero img { width: min(100%, 640px); filter: drop-shadow(0 18px 30px rgba(0,0,0,.18)); }
+.cap { font-size: 13px; color: var(--muted); }
+
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.pair figure { margin: 0; display: grid; gap: 8px; min-width: 0; }
+.pair img { width: 100%; border-radius: 4px; display: block; aspect-ratio: 562/746; object-fit: cover; }
+
+.viewer { position: relative; background: var(--stage); border-radius: 6px; overflow: hidden; aspect-ratio: 16/10; max-height: 640px; width: 100%; touch-action: none; }
+.viewer canvas { display: block; width: 100%; height: 100%; cursor: grab; }
+.viewer canvas:active { cursor: grabbing; }
+.controls { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+button.primary { font: 600 14px var(--sans); background: var(--orange); color: #fff; border: 0; border-radius: 4px; padding: 10px 18px; cursor: pointer; }
+button.ghost { font: 500 14px var(--sans); background: transparent; color: var(--fg); border: 1px solid var(--line); border-radius: 4px; padding: 9px 16px; cursor: pointer; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+.range { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+.range input { width: 180px; accent-color: var(--orange); }
+.hint { position: absolute; left: 12px; bottom: 10px; font-size: 12px; color: var(--muted); pointer-events: none; }
+
+.place { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.diagram { background: var(--surface); border-radius: 6px; padding: 12px; overflow-x: auto; }
+.diagram svg { display: block; width: 100%; min-width: 420px; height: auto; }
+.facts { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.facts li { display: grid; gap: 2px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.facts li:last-child { border-bottom: 0; }
+.facts b { font-weight: 600; }
+.facts span { color: var(--muted); font-size: 14px; }
+
+.tablebox { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 500; color: var(--muted); width: 34%; }
+td { font-family: var(--mono); font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.sw { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -1px; margin-right: 6px; background: #FF5623; }
+
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.two > div { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.copy { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.copy div { display: grid; grid-template-columns: 110px 1fr; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.copy div:last-child { border-bottom: 0; }
+.copy span { color: var(--muted); font-size: 13px; }
+.copy q { quotes: none; font-weight: 600; }
+.off { margin: 0; padding-left: 18px; display: grid; gap: 6px; color: var(--muted); }
+
+.flags { display: grid; gap: 10px; }
+.flag { display: grid; grid-template-columns: auto 1fr; gap: 12px; background: var(--warn-bg); border-radius: 6px; padding: 14px 16px; }
+.flag .n { font: 600 12px var(--mono); color: var(--warn); padding-top: 2px; }
+.flag b { display: block; font-weight: 600; margin-bottom: 2px; }
+.flag p { color: var(--fg); font-size: 14px; }
+
+.files { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.files li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.files code { font: 13px var(--mono); word-break: break-all; }
+.files span { color: var(--muted); font-size: 13px; text-align: right; }
+
+@media (max-width: 760px) {
+  .pair, .place, .two { grid-template-columns: 1fr; }
+  .viewer { aspect-ratio: 4/5; }
+  .files li { grid-template-columns: 1fr; }
+  .files span { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brandrow">
+      {{LOGO}}
+      <span class="chip">Choose a layout</span>
+    </div>
+    <div class="eyebrow">Packaging · Adhesive label · Revision 1 · Nov 19, 2026</div>
+    <h1>Hidden fastener box label</h1>
+    <p class="lede">A branded adhesive label for the plain kraft box that ships Deckotech hidden fasteners, so customers recognize the product and know it is made for Deckotech decking.</p>
+    <div class="meta">
+      <div><span class="eyebrow">Requested by</span><b>José Aguilar</b></div>
+      <div><span class="eyebrow">Label size</span><b class="mono">7 × 5 in</b></div>
+      <div><span class="eyebrow">Placement</span><b>Centered on lid top</b></div>
+      <div><span class="eyebrow">Box</span><b class="mono">8.75 × 7.25 × 4.25 in</b></div>
+    </div>
+  </header>
+
+  <section aria-labelledby="s-opts">
+    <div class="sechead"><h2 id="s-opts">Layout options</h2><p class="cap">Same copy, same 7 × 5 in die-cut, same placement. Pick one to see it on the photo, the placement drawing and the 3D box below.</p></div>
+    <div class="opts" role="group" aria-label="Layout options">
+      <button class="opt" type="button" aria-pressed="true" data-key="a" data-name="Option A · Bold" data-mock="{{MOCK_A}}"><img src="{{LABEL_A}}" alt="Option A"><b><small>A</small>Bold</b><span>Orange field, large headline and deck-board stripes taken from the symbol. The loudest on a shelf.</span></button>
+      <button class="opt" type="button" aria-pressed="false" data-key="b" data-name="Option B · Iron" data-mock="{{MOCK_B}}"><img src="{{LABEL_B}}" alt="Option B"><b><small>B</small>Iron</b><span>Iron Black with tracked capitals and an orange foot band. A quiet, premium hardware look.</span></button>
+      <button class="opt" type="button" aria-pressed="false" data-key="c" data-name="Option C · Split" data-mock="{{MOCK_C}}"><img src="{{LABEL_C}}" alt="Option C"><b><small>C</small>Split</b><span>A light editorial field beside an orange panel carrying the star badge. Clean and architectural.</span></button>
+      <button class="opt" type="button" aria-pressed="false" data-key="d" data-name="Option D · Tonal" data-mock="{{MOCK_D}}"><img src="{{LABEL_D}}" alt="Option D"><b><small>D</small>Tonal</b><span>Orange on orange with an oversized star badge bleeding off the edge. Bold but refined.</span></button>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-art">
+    <div class="sechead"><h2 id="s-art"><span id="optName">Option A · Bold</span></h2><p class="cap">Shown at trim size with the die-cut corner.</p></div>
+    <div class="hero"><img id="heroImg" src="{{LABEL_A}}" alt="Selected label layout reading Hidden fasteners, For Deckotech decking, deckotech.us"></div>
+  </section>
+
+  <section aria-labelledby="s-box">
+    <div class="sechead"><h2 id="s-box">On the reference box</h2><p class="cap">Left: the box as it ships today. Right: the label applied at final size and position, in the same photo.</p></div>
+    <div class="pair">
+      <figure><img src="{{REF}}" alt="Plain kraft mailer box on a desk"><figcaption class="cap">Current: unbranded</figcaption></figure>
+      <figure><img id="mockImg" src="{{MOCK_A}}" alt="Same box with the selected label on the lid"><figcaption class="cap" id="mockCap">Option A · Bold: 7 × 5 in label on the lid</figcaption></figure>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-3d">
+    <div class="sechead"><h2 id="s-3d">3D preview</h2><p class="cap">Roll-end, tuck-front mailer built to the real box dimensions. Drag to turn it; open the lid to check that the label stays clear of every fold.</p></div>
+    <div class="viewer" id="viewer"><span class="hint">Drag to rotate · scroll or pinch to zoom</span></div>
+    <div class="controls">
+      <button class="primary" id="toggle" type="button">Open the box</button>
+      <label class="range" for="lid">Lid <input id="lid" type="range" min="0" max="100" value="0"></label>
+      <button class="ghost" id="reset" type="button">Reset view</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-place">
+    <div class="sechead"><h2 id="s-place">Size and placement</h2><p class="cap">Lid top seen from above, front edge at the bottom. All dimensions in inches.</p></div>
+    <div class="place">
+      <div class="diagram">
+        <svg viewBox="0 0 700 600" role="img" aria-label="Lid 8.75 by 7.25 inches with a 7 by 5 inch label centered: 0.875 inch clearance left and right, 1.125 inch to the back hinge and the front fold">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L9 5 L0 9 z" fill="var(--muted)"/></marker>
+          </defs>
+          <!-- lid: 60 px per inch; lid at (100,90), 525 x 435 -->
+          <rect x="100" y="90" width="525" height="435" fill="#C9A274" stroke="#8C6A45" stroke-width="1.5"/>
+          <line x1="100" y1="90" x2="625" y2="90" stroke="#5E4528" stroke-width="3"/>
+          <line x1="100" y1="525" x2="625" y2="525" stroke="#5E4528" stroke-width="3" stroke-dasharray="8 6"/>
+          <image id="diagImg" href="{{LABEL_A}}" x="152.5" y="157.5" width="420" height="300"/>
+          <rect x="152.5" y="157.5" width="420" height="300" rx="7.5" fill="none" stroke="#fff" stroke-opacity=".7" stroke-dasharray="4 4"/>
+          <!-- overall width -->
+          <line x1="100" y1="50" x2="625" y2="50" stroke="var(--muted)" marker-start="url(#ar)" marker-end="url(#ar)"/>
+          <text x="362.5" y="42" text-anchor="middle" font-family="Roboto Mono, monospace" font-size="14" fill="var(--fg)">8.75 lid</text>
+          <!-- overall depth -->
+          <line x1="60" y1="90" x2="60" y2="525" stroke="var(--muted)" marker-start="url(#ar)" marker-end="url(#ar)"/>
+          <text x="50" y="307" text-anchor="middle" font-family="Roboto Mono, monospace" font-size="14" fill="var(--fg)" transform="rotate(-90 50 307)">7.25 lid</text>
+          <!-- label width / height -->
+          <line x1="152.5" y1="480" x2="572.5" y2="480" stroke="var(--fg)" marker-start="url(#ar)" marker-end="url(#ar)"/>
+          <text x="362.5" y="500" text-anchor="middle" font-family="Roboto Mono, monospace" font-size="14" font-weight="500" fill="var(--fg)">7.00 label</text>
+          <line x1="595" y1="157.5" x2="595" y2="457.5" stroke="var(--fg)" marker-start="url(#ar)" marker-end="url(#ar)"/>
+          <text x="612" y="307" text-anchor="middle" font-family="Roboto Mono, monospace" font-size="14" font-weight="500" fill="var(--fg)" transform="rotate(90 612 307)">5.00 label</text>
+          <!-- clearances -->
+          <line x1="362.5" y1="92" x2="362.5" y2="155" stroke="#5E4528" marker-start="url(#ar)" marker-end="url(#ar)"/>
+          <text x="372" y="128" font-family="Roboto Mono, monospace" font-size="13" fill="#3B2A16">1.125</text>
+          <line x1="102" y1="200" x2="150" y2="200" stroke="#5E4528" marker-start="url(#ar)" marker-end="url(#ar)"/>
+          <text x="126" y="192" text-anchor="middle" font-family="Roboto Mono, monospace" font-size="13" fill="#3B2A16">0.875</text>
+          <line x1="140" y1="460" x2="140" y2="523" stroke="#5E4528" marker-start="url(#ar)" marker-end="url(#ar)"/>
+          <text x="112" y="496" text-anchor="middle" font-family="Roboto Mono, monospace" font-size="13" fill="#3B2A16">1.125</text>
+          <!-- edge names -->
+          <text x="362.5" y="76" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="var(--muted)">BACK · lid hinge</text>
+          <text x="362.5" y="552" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" fill="var(--muted)">FRONT · tuck flap fold</text>
+          <text x="362.5" y="580" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="var(--muted)">Ends (left / right) are rolled double walls</text>
+        </svg>
+      </div>
+      <ul class="facts">
+        <li><b>Lid top is the only clean panel</b><span>It is the largest flat face with no folds, flaps or seams. The front, back and ends all carry a fold line or a rolled edge.</span></li>
+        <li><b>7 × 5 in, centered</b><span>Leaves 0.875 in to each side and 1.125 in to the back hinge and the front fold, so the label never crosses a crease and the lid opens freely.</span></li>
+        <li><b>Reads from the front</b><span>The 7 in side runs parallel to the front edge, so the type reads the right way up when the box faces the customer.</span></li>
+        <li><b>Standard size</b><span>7 × 5 in is a stock label size at most printers, which keeps die costs down.</span></li>
+        <li><b>Application tolerance</b><span>About 1/8 in of hand-placement drift in any direction still keeps a safe gap from every fold.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-spec">
+    <div class="sechead"><h2 id="s-spec">Print specifications</h2><p class="cap">Prepared to standard label-printer specs. Colors listed are for Option A; final print files are built for the layout you choose. Swap in the supplier's requirements once we have them.</p></div>
+    <div class="tablebox">
+      <table>
+        <tr><th>Finished size (trim)</th><td>7.000 × 5.000 in · 177.8 × 127.0 mm</td></tr>
+        <tr><th>Bleed</th><td>0.125 in each side · artboard with bleed 7.25 × 5.25 in</td></tr>
+        <tr><th>Safe zone</th><td>0.125 in inside trim · all copy sits ≥ 0.44 in inside</td></tr>
+        <tr><th>Die-cut shape</th><td>Rectangle, 0.125 in corner radius · spot swatch "CutContour"</td></tr>
+        <tr><th>Color mode</th><td>CMYK · output intent U.S. Web Coated (SWOP) v2</td></tr>
+        <tr><th>Deckotech Orange</th><td><span class="sw"></span>PMS 172 C · CMYK 0 / 80 / 95 / 0</td></tr>
+        <tr><th>Board stripes</th><td>CMYK 0 / 68 / 80 / 0</td></tr>
+        <tr><th>Logo and type</th><td>No ink (white label stock shows through) · all text outlined</td></tr>
+        <tr><th>File format</th><td>PDF/X-4, vector, single page · no printer's marks</td></tr>
+        <tr><th>Suggested stock</th><td>White BOPP or coated paper, permanent adhesive for corrugated kraft · confirm with supplier</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-copy">
+    <div class="two">
+      <div>
+        <h2 id="s-copy">Copy on the label</h2>
+        <div class="copy">
+          <div><span>Brand</span><q>Official Deckotech logo (lockup, or wordmark with star badge)</q></div>
+          <div><span>Product</span><q>Hidden fasteners</q></div>
+          <div><span>Intended use</span><q>For Deckotech decking</q></div>
+          <div><span>Website</span><q>deckotech.us</q></div>
+        </div>
+        <p class="cap">All customer-facing copy is in English.</p>
+      </div>
+      <div>
+        <h2>Kept off the label</h2>
+        <p class="cap">Left out until they are validated, per the brief:</p>
+        <ul class="off">
+          <li>Quantities or piece counts</li>
+          <li>Compatibility with specific collections or profiles</li>
+          <li>Installation instructions</li>
+          <li>Technical specifications, materials or warranty terms</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-flags">
+    <div class="sechead"><h2 id="s-flags">To confirm before printing</h2></div>
+    <div class="flags">
+      <div class="flag"><span class="n">01</span><div><b>Brand spelling</b><p>The brief writes "DekoTech". The official name and logo in the 2026 brand guideline are "Deckotech", so the label uses Deckotech.</p></div></div>
+      <div class="flag"><span class="n">02</span><div><b>Supplier specs</b><p>No supplier specs were received. Files follow standard label specs (above) and can be re-exported quickly if the printer asks for something different.</p></div></div>
+      <div class="flag"><span class="n">03</span><div><b>Orange on press</b><p>CMYK cannot hit PMS 172 C exactly. Ask for a printed proof, or print the orange as a Pantone spot if the supplier offers it.</p></div></div>
+      <div class="flag"><span class="n">04</span><div><b>Box measurement check</b><p>Placement is based on the 8.75 × 7.25 in lid. A quick test with a printed 7 × 5 in paper cut-out on a real box confirms the fit before the full run.</p></div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-files">
+    <div class="sechead"><h2 id="s-files">Deliverables</h2><p class="cap">Saved in DKT Vault / Projects 2026 / [DKT] Hidden Fastener Label</p></div>
+    <ul class="files">
+      <li><code>print/DKT_Hidden-Fastener-Label_7x5in_PRINT.pdf</code><span>Print-ready, send to supplier</span></li>
+      <li><code>source/DKT_Hidden-Fastener-Label_7x5in.ai</code><span>Editable Illustrator source</span></li>
+      <li><code>mockups/mockup-on-reference-photo.png</code><span>Mockup on the reference photo</span></li>
+      <li><code>artwork/label_print.svg</code><span>Option A vector master with bleed</span></li>
+      <li><code>artwork/options/option-{b,c,d}_print.svg</code><span>Options B, C, D vector masters</span></li>
+      <li><code>mockups/mockup-option-{a,b,c,d}.png</code><span>Each option on the reference photo</span></li>
+    </ul>
+  </section>
+</div>
+
+<script>
+(function () {
+  const cards = [...document.querySelectorAll('.opt')];
+  function pick(card) {
+    cards.forEach(c => c.setAttribute('aria-pressed', String(c === card)));
+    const src = card.querySelector('img').src, name = card.dataset.name;
+    document.getElementById('heroImg').src = src;
+    document.getElementById('diagImg').setAttribute('href', src);
+    document.getElementById('mockImg').src = card.dataset.mock;
+    document.getElementById('optName').textContent = name;
+    document.getElementById('mockCap').textContent = name + ': 7 × 5 in label on the lid';
+    if (window.__setLabel) window.__setLabel(src);
+    try { localStorage.setItem('dkt-label-opt', card.dataset.key); } catch (e) {}
+  }
+  cards.forEach(c => c.addEventListener('click', () => pick(c)));
+  let saved = null; try { saved = localStorage.getItem('dkt-label-opt'); } catch (e) {}
+  const start = cards.find(c => c.dataset.key === saved);
+  if (start) window.addEventListener('load', () => pick(start));
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(function () {
+  const host = document.getElementById('viewer');
+  if (!window.THREE) { host.insertAdjacentHTML('beforeend', '<p style="padding:24px">The 3D preview could not load. The photo mockup above shows the same placement.</p>'); return; }
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // real box, inches
+  const W = 8.75, D = 7.25, H = 4.25, T = 0.12, END = 0.3;
+  const LW = 7, LH = 5;
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  host.prepend(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(32, 1.6, 0.1, 200);
+  const HOME = new THREE.Vector3(14, 12.5, 17);
+  camera.position.copy(HOME);
+
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.target.set(0, 2.4, 0);
+  controls.enableDamping = true; controls.enablePan = false;
+  controls.minDistance = 11; controls.maxDistance = 38;
+  controls.maxPolarAngle = Math.PI / 2 - 0.04;
+  controls.autoRotate = !reduce; controls.autoRotateSpeed = 0.6;
+  renderer.domElement.addEventListener('pointerdown', () => { controls.autoRotate = false; });
+
+  scene.add(new THREE.HemisphereLight(0xfff6ea, 0x6b5a48, 0.75));
+  const sun = new THREE.DirectionalLight(0xffffff, 0.85);
+  sun.position.set(9, 16, 10); sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  Object.assign(sun.shadow.camera, { left: -12, right: 12, top: 12, bottom: -12 });
+  sun.shadow.radius = 4; sun.shadow.bias = -0.0005;
+  scene.add(sun);
+  const fill = new THREE.DirectionalLight(0xffe9d6, 0.25); fill.position.set(-10, 6, -4); scene.add(fill);
+
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), new THREE.ShadowMaterial({ opacity: 0.2 }));
+  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+
+  // procedural kraft texture
+  function kraft(base, seed) {
+    const c = document.createElement('canvas'); c.width = c.height = 512;
+    const g = c.getContext('2d'); g.fillStyle = base; g.fillRect(0, 0, 512, 512);
+    let s = seed; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < 9000; i++) {
+      const a = r() * 0.08; g.fillStyle = r() > 0.5 ? `rgba(70,45,20,${a})` : `rgba(255,240,215,${a})`;
+      g.fillRect(r() * 512, r() * 512, 1 + r() * 2, 1 + r() * 2);
+    }
+    g.lineWidth = 1;
+    for (let i = 0; i < 260; i++) {
+      g.strokeStyle = `rgba(80,52,25,${r() * 0.12})`; g.beginPath();
+      const x = r() * 512, y = r() * 512; g.moveTo(x, y); g.lineTo(x + (r() - 0.5) * 30, y + (r() - 0.5) * 6); g.stroke();
+    }
+    const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding;
+    t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(1.6, 1.6); t.anisotropy = 4;
+    return t;
+  }
+  const outside = new THREE.MeshStandardMaterial({ map: kraft('#C79C6B', 7), roughness: 0.92, metalness: 0 });
+  const inside = new THREE.MeshStandardMaterial({ map: kraft('#B48C62', 11), roughness: 0.95, metalness: 0 });
+  const edge = new THREE.MeshStandardMaterial({ color: 0xA67C50, roughness: 1 });
+
+  function panel(w, h, d, mats) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mats || outside);
+    m.castShadow = true; m.receiveShadow = true; return m;
+  }
+  // BoxGeometry face order: +x, -x, +y, -y, +z, -z
+  const sideMats = (out) => out.map(o => o === 'o' ? outside : o === 'i' ? inside : edge);
+
+  const box = new THREE.Group(); scene.add(box);
+  const bottom = panel(W, T, D, sideMats(['e','e','i','o','e','e'])); bottom.position.y = T / 2; box.add(bottom);
+  const front = panel(W - 2 * END, H, T, sideMats(['e','e','e','e','o','i'])); front.position.set(0, H / 2, D / 2 - T / 2); box.add(front);
+  const back = panel(W - 2 * END, H, T, sideMats(['e','e','e','e','i','o'])); back.position.set(0, H / 2, -D / 2 + T / 2); box.add(back);
+  [-1, 1].forEach(sx => {
+    const e = panel(END, H, D, sideMats(sx > 0 ? ['o','i','e','e','e','e'] : ['i','o','e','e','e','e']));
+    e.position.set(sx * (W / 2 - END / 2), H / 2, 0); box.add(e);
+  });
+
+  // lid, hinged on the back top edge
+  const lid = new THREE.Group(); lid.position.set(0, H, -D / 2); box.add(lid);
+  const top = panel(W, T, D, sideMats(['e','e','o','i','e','e'])); top.position.set(0, T / 2, D / 2); lid.add(top);
+
+  const tex = new THREE.TextureLoader().load(document.getElementById('heroImg').src, () => render());
+  tex.encoding = THREE.sRGBEncoding; tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  const label = new THREE.Mesh(new THREE.PlaneGeometry(LW, LH),
+    new THREE.MeshStandardMaterial({ map: tex, transparent: true, roughness: 0.55, metalness: 0 }));
+  label.rotation.x = -Math.PI / 2; label.position.set(0, T + 0.006, D / 2); label.receiveShadow = true;
+  lid.add(label);
+  window.__setLabel = (src) => new THREE.TextureLoader().load(src, (t2) => {
+    t2.encoding = THREE.sRGBEncoding; t2.anisotropy = tex.anisotropy;
+    const old = label.material.map; label.material.map = t2; label.material.needsUpdate = true; if (old) old.dispose();
+  });
+
+  // front tuck flap, folds down inside the front wall
+  const fh = H * 0.72;
+  const tuckHinge = new THREE.Group(); tuckHinge.position.set(0, T / 2, D - T); lid.add(tuckHinge);
+  const tuck = panel(W - 2 * END - 0.12, fh, T, sideMats(['e','e','e','e','i','o'])); tuck.position.set(0, -fh / 2, -T / 2); tuckHinge.add(tuck);
+
+  // dust flaps on the lid sides, fold down inside the rolled ends
+  const dust = [-1, 1].map(sx => {
+    const h = new THREE.Group(); h.position.set(sx * (W / 2 - END - 0.04), 0, D / 2); lid.add(h);
+    const dh = H * 0.55, f = panel(T, dh, D * 0.62, inside); f.position.set(-sx * T / 2, -dh / 2, 0); h.add(f);
+    return { h, sx };
+  });
+
+  box.position.y = 0.001;
+
+  // open / close
+  let t = 0, target = 0;
+  const btn = document.getElementById('toggle'), slider = document.getElementById('lid');
+  function pose(v) {
+    const e = v < 0.5 ? 2 * v * v : 1 - Math.pow(-2 * v + 2, 2) / 2;
+    lid.rotation.x = -e * 1.98;
+    tuckHinge.rotation.x = -Math.min(1, e * 1.4) * 1.15;
+    dust.forEach(d => { d.h.rotation.z = d.sx * Math.min(1, e * 1.6) * 0.55; });
+  }
+  function setTarget(v, instant) {
+    target = v; if (instant || reduce) t = v;
+    btn.textContent = v > 0.5 ? 'Close the box' : 'Open the box';
+  }
+  btn.addEventListener('click', () => { setTarget(target > 0.5 ? 0 : 1); });
+  slider.addEventListener('input', () => { setTarget(slider.value / 100, true); });
+  document.getElementById('reset').addEventListener('click', () => {
+    camera.position.copy(HOME); controls.target.set(0, 2.4, 0); controls.update(); setTarget(0, true); slider.value = 0;
+  });
+
+  function size() {
+    const w = host.clientWidth, h = host.clientHeight; if (!w || !h) return;
+    renderer.setSize(w, h, false); camera.aspect = w / h;
+    camera.fov = w / h < 1 ? 44 : 32; camera.updateProjectionMatrix(); render();
+  }
+  new ResizeObserver(size).observe(host);
+
+  function render() { renderer.render(scene, camera); }
+  function loop() {
+    requestAnimationFrame(loop);
+    if (Math.abs(target - t) > 0.0005) { t += (target - t) * 0.06; slider.value = Math.round(t * 100); }
+    pose(t); controls.update(); render();
+  }
+  size(); pose(0); loop();
+})();
+</script>
